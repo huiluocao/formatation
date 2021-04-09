@@ -68,3 +68,44 @@ for file in os.listdir('./'):
             with open('../193gca_info.txt','a') as g:
                 g.write('\t'.join([GCA,orga,family,strain,acc,biop,bios,ref,des,source,country,date])+'\n')
                     
+
+                    
+                    
+                    
+###### wrong code:
+with open('./989biosample_result-2.txt', 'r') as f:
+    txt=f.read()
+    chunks = txt.split('\n\n')
+    print(len(chunks))
+    for chunk in chunks:
+        info = []
+        for line in chunk.split('\n'):
+            try:
+                if 'Identifiers' in line:
+                    bios=(line.split(';')[0]).split(':')[2]
+                    sample_id = (line.split(';')[1]).split(':')[1]
+            except:
+                    sample_id = 'n/a'
+            try:
+                if '/strain' in line:
+                    strain=line.split('"')[1]
+            except:
+                strain='n/a'
+            try:
+                if '/host' in line:
+                    host = line.split('"')[1]
+            except:
+                host = 'n/a'
+            try:
+                if '/isolation source' in line:
+                    source = line.split('"')[1]
+            except:
+                source = "n/a"
+            try:
+                '/sequence_type' in line
+                sequence_type = line.split('"')[1]
+            except:
+                sequence_type = 'n/a'
+        print(bios,sample_id,strain,host,source,sequence_type)
+        #with open('./989biosample_clean.txt','a') as g:
+        #    g.write('\t'.join([bios,sample_id,strain,host,source,sequence_type])+'\n')
