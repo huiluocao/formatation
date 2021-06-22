@@ -124,3 +124,29 @@ with open('./S19M9320215_contig3_cps_rast.gbk','r') as f:
                 ffn=(feature.location.extract(rec).seq)
                 with open('S19M9320215_contig3_cps_rast.ffn','a') as h:
                     h.write('>%s\n%s\n'%(seq_id,ffn))
+
+                    
+with open('./MNY584_24B.gb','r') as f:
+    for rec in SeqIO.parse(f,'genbank'):
+        print(rec.id)
+        for feature in rec.features:
+            if feature.type == 'CDS':
+                try:
+                    seq_id=(feature.qualifiers['gene'])[0]
+                except:
+                    seq_id=(feature.qualifiers['note'])[0]
+                print(seq_id)
+                try:
+                    faa=(feature.qualifiers['translation'])[0]
+                    faa_id=(feature.qualifiers['protein_id'])[0]
+                except:
+                    pass
+                with open('MNY584_24B.faa','a') as g:
+                    g.write('>MNY584_24B_%s(%s)\n%s\n'%(seq_id,faa_id,faa))
+                try:
+                    ffn=(feature.location.extract(rec).seq)
+                    ffn_id=(feature.qualifiers['locus_tag'])[0]
+                except:
+                    pass
+                with open('MNY584_24B.ffn','a') as h:
+                    h.write('>MNY584_24B_%s(%s)\n%s\n'%(seq_id,ffn_id,ffn))  
