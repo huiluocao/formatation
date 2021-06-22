@@ -109,3 +109,18 @@ with open('./989biosample_result-2.txt', 'r') as f:
         print(bios,sample_id,strain,host,source,sequence_type)
         #with open('./989biosample_clean.txt','a') as g:
         #    g.write('\t'.join([bios,sample_id,strain,host,source,sequence_type])+'\n')
+
+        
+with open('./S19M9320215_contig3_cps_rast.gbk','r') as f:
+    for rec in SeqIO.parse(f,'genbank'):
+        print(rec.id)
+        for feature in rec.features:
+            if feature.type == 'CDS':
+                seq_id=(feature.qualifiers['db_xref'])[0][5:]
+                print(seq_id)
+                faa=(feature.qualifiers['translation'])[0]
+                with open('S19M9320215_contig3_cps_rast.faa','a') as g:
+                    g.write('>%s\n%s\n'%(seq_id,faa))
+                ffn=(feature.location.extract(rec).seq)
+                with open('S19M9320215_contig3_cps_rast.ffn','a') as h:
+                    h.write('>%s\n%s\n'%(seq_id,ffn))
