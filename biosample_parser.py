@@ -28,3 +28,6 @@ with open('./biosample_result.txt','r') as f:
                 d='n/a'
         with open('./biosample_location.txt','a') as g:
             g.write(a+'\t'+d+'\n')
+
+            
+esearch -h | efetch -h            
