@@ -150,3 +150,35 @@ with open('./MNY584_24B.gb','r') as f:
                     pass
                 with open('MNY584_24B.ffn','a') as h:
                     h.write('>MNY584_24B_%s(%s)\n%s\n'%(seq_id,ffn_id,ffn))  
+
+                    
+                    
+                    
+with open('./21881_vf.list','r') as f:
+    v21881_vf=[]
+    for line in f.readlines():
+        line=line.strip()
+        v21881_vf.append(line)
+len(v21881_vf)
+for i in v21881_vf:
+    with open('./21881.gbff','r') as f:
+        for rec in SeqIO.parse(f,'genbank'):
+            #print(rec.id)
+            for feature in rec.features:
+                if feature.type == 'CDS':
+                    for k,v in feature.qualifiers.items():
+             #           print(k,v)
+                        if k=='old_locus_tag' and v[0]==i:
+                            try:
+                                faa=(feature.qualifiers['translation'])[0]
+                                with open('./21881_vf.faa','a') as g:
+                                    g.write('>%s %s\n%s\n'%((feature.qualifiers['protein_id'])[0],v[0],faa))
+                            except:
+                                print(i)           
+                        elif k=='locus_tag' and v[0]==i:
+                            try:
+                                faa=(feature.qualifiers['translation'])[0]
+                                with open('./21881_vf.faa','a') as g:
+                                    g.write('>%s %s\n%s\n'%((feature.qualifiers['protein_id'])[0],v[0],faa))
+                            except:
+                                print(i)
