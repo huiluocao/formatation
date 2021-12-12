@@ -182,3 +182,16 @@ for i in v21881_vf:
                                     g.write('>%s %s\n%s\n'%((feature.qualifiers['protein_id'])[0],v[0],faa))
                             except:
                                 print(i)
+
+with open('./RR.list','r') as f:
+    for line in f.readlines():
+        line=line.strip()
+        i=line.split('\t')
+        #print(i[1])
+        with open('TIGR4.gbk','r') as g:
+            for rec in SeqIO.parse(g,'genbank'):
+                for feature in rec.features:
+                    if feature.type == 'CDS':
+                        #print(feature.qualifiers['locus_tag'])
+                        if (feature.qualifiers['locus_tag'])[0]==i[1]:
+                            print('>'+i[1]+'|'+i[0]+'\n'+'%s'%(feature.qualifiers['translation'][0]))
