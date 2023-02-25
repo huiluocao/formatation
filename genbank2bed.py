@@ -33,3 +33,6 @@ with open('./Lg2.gb','r') as f:
                     strand=''
                 with open('Lg2.bed','a') as g:
                     g.write(locus_tag[0]+'\t'+old_locus_tag[0]+'\t'+gene[0]+'\t'+product[0]+'\t'+protein_id[0]+'\t'+str(start)+'\t'+str(end)+'\t'+str(strand)+'\n')
+
+                    
+                    
