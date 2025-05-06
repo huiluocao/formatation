@@ -2,6 +2,7 @@ from Bio import Entrez
 import argparse
 import pandas as pd
 import json
+import re
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-e", "--email", help = "email")
@@ -52,8 +53,13 @@ def getall(searchstring):
         host = searchstringsplit(searchstring, "host", "host")
     except:
         host = "Not Available"
+
+    try:
+        SRA = re.search(r'<Id db="SRA">(SRS\d+)</Id>', searchstring).group(1)
+    except:
+        SRA = "Not Available"
     
-    return collection_date, geo_loc_name, isolation_source, host
+    return collection_date, geo_loc_name, isolation_source, host, SRA
     
 def main():
     for biosample in indata["Biosample"]:
@@ -63,14 +69,14 @@ def main():
         record2 = Entrez.read(handle2)
         searchstring = str(record2["DocumentSummarySet"]["DocumentSummary"][0]["SampleData"])
         
-        collection_date, geo_loc_name, isolation_source, host = getall(searchstring)
+        collection_date, geo_loc_name, isolation_source, host, SRA = getall(searchstring)
         #indata.loc[indata["Biosample"] == biosample, "Date"] = collection_date
         #indata.loc[indata["Biosample"] == biosample, "Geo"] = geo_loc_name
         #indata.loc[indata["Biosample"] == biosample, "Source"] = isolation_source
         #indata.loc[indata["Biosample"] == biosample, "Host"] = host
-        print(biosample,collection_date, geo_loc_name, isolation_source, host)
+        print(biosample,collection_date, geo_loc_name, isolation_source, host, SRA)
         with open('./pa37549_biosample_meta.txt','a') as f:
-            f.write(biosample+'\t'+host+'\t'+isolation_source+'\t'+geo_loc_name+'\t'+str(collection_date)+'\n')
+            f.write(biosample+'\t'+host+'\t'+isolation_source+'\t'+geo_loc_name+'\t'+str(collection_date)+'\t'+str(SRA)+'\n')
     #indata.to_csv("./sa2024_biosample_meta.txt", sep = "\t", index = False)
 main()
 
